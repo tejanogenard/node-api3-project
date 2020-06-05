@@ -1,8 +1,9 @@
 const express = require('express');
 const users = require('./userDb')
+const posts = require('../posts/postDb')
 const router = express.Router();
 
-router.post('/', validateUser, (req, res) => {
+router.post('/', validateUser, (req, res) => { // working 
   users.insert(req.body)
     .then(user => {
       res.status(201).json( {user} )
@@ -12,8 +13,10 @@ router.post('/', validateUser, (req, res) => {
     })
 });
 
-router.post('/:id/posts', validatePost, validateUserId, (req, res) => {
-  users.insert(req.body)
+router.post('/:id/posts', validatePost, validateUserId,  (req, res) => { //working!
+  const {id} = req.params
+
+  posts.insert({...body, user_id: id })
   .then( post => {
     res.status(201).json(post)
   })
@@ -24,7 +27,7 @@ router.post('/:id/posts', validatePost, validateUserId, (req, res) => {
 
 });
 
-router.get('/', (req, res) => {
+router.get('/', (req, res) => { // working
   users.get()
   .then( user => {
     res.status(200).json(user);
@@ -35,7 +38,7 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', validateUserId, (req, res) => {
+router.get('/:id', validateUserId, (req, res) => { // working
   users.getById(req.params.id)
   .then((user => {
     res.status(200).json(user)
@@ -45,7 +48,7 @@ router.get('/:id', validateUserId, (req, res) => {
   })
 });
 
-router.get('/:id/posts', validateUserId, (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => { // working 
   users.getUserPosts(req.params.id)
   .then( post => {
     res.status(200).json(post)
@@ -55,8 +58,9 @@ router.get('/:id/posts', validateUserId, (req, res) => {
   })
 });
 
-router.delete('/:id', (req, res) => {
-  users.remove(req.params.id)
+router.delete('/:id',  (req, res) => { // working!
+  const { id } = req.params
+  users.remove(id)
   .then(user => {
     res.status(200).json(user)
   })
@@ -65,8 +69,10 @@ router.delete('/:id', (req, res) => {
   })
 });
 
-router.put('/:id', (req, res) => {
-  users.update(req.params.id, req.body)
+router.put('/:id', (req, res) => { // Working! 
+  const { id } = req.params
+  const body = req.body
+  users.update(id, body)
     .then(user => {
       res.status(201).json(user)
     })

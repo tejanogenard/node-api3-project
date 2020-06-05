@@ -13,7 +13,7 @@ router.get('/', (req, res) => { //working
     }))
 });
 
-router.get('/:id', validatePostId, (req, res) => {
+router.get('/:id', validatePostId, (req, res) => { // working 
   posts.getById(req.params.id)
     .then(post => {
       res.status(200).json(post)
@@ -24,7 +24,7 @@ router.get('/:id', validatePostId, (req, res) => {
 
 });
 
-router.delete('/:id', validatePostId, (req, res) => {
+router.delete('/:id', validatePostId, (req, res) => { // working 
   posts.remove(req.param.id)
     .then(post => {
       res.status(200).json({
@@ -37,10 +37,12 @@ router.delete('/:id', validatePostId, (req, res) => {
     })
 });
 
-router.put('/:id', validatePostId, (req, res) => {
-  posts().update(req.params.id, req.body)
+router.put('/:id', validatePostId, (req, res) => { // working! 
+const { id } = req.params
+const postBody = req.body
+  posts.update(id, postBody)  
     .then(post => {
-      res.status(200).json(post)
+      res.status(200).json({...post, id})
     })
     .catch(err => {
       res.status(500).json({
