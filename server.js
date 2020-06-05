@@ -1,12 +1,25 @@
 const express = require('express');
 
-
 const server = express();
 
+//Routes
+const postRouter = require("./posts/postRouter")
+const userRouter = require("./users/userRouter")
 
-//custom middleware
+
+//custom middleware logger function 
+const logger = (req, res, next) => {
+   const newtime = new Date()
+  console.log(`
+  Method: ${req.method} 
+  URL: ${req.originalUrl}
+  Timestamp: ${newtime}`);
+  next();
+}
 
 
+server.use("/api/users", logger, userRouter)
+server.use("/api/posts", logger, postRouter)
 
 
 
