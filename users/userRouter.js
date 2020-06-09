@@ -71,7 +71,7 @@ router.delete('/:id',  (req, res) => { // working!
 
 router.put('/:id', (req, res) => { // Working! 
   const { id } = req.params
-  const body = req.body
+  const body = req.body 
   users.update(id, body)
     .then(user => {
       res.status(201).json(user)
